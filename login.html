@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>{% if demo and raw_username %}{{ raw_username|safe }}{% else %}ADMIN - Acceso{% endif %}</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;display:grid;place-items:center;min-height:100vh;background:#f7f7fb;margin:0}
+    .card{width:100%;max-width:420px;background:#fff;border:1px solid #e6e6ef;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.06);padding:24px}
+    .title{font-size:20px;margin:0 0 8px}
+    .muted{color:#666;margin:0 0 16px}
+    label{display:block;margin:12px 0 6px}
+    input{width:100%;padding:10px 12px;border:1px solid #cfcfe6;border-radius:10px}
+    button{margin-top:14px;width:100%;padding:10px 12px;border:0;border-radius:10px;cursor:pointer;background:#111;color:#fff}
+    .msg{margin:10px 0;padding:10px;border-radius:8px}
+    .success{background:#e8fff0;border:1px solid #9be2b0}
+    .error{background:#fff3f3;border:1px solid #f2a6a6}
+    .banner{margin-bottom:12px;padding:10px;border-radius:10px;border:1px dashed #e0b}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1 class="title">Panel ADMIN</h1>
+
+    {% if demo %}
+      <div class="banner">
+        <strong>Modo demo inseguro activado</strong> (solo con <code>?demo=1</code>).<br/>
+        El nombre de usuario se renderiza sin escapar para simular una inyeccion de HTML.
+      </div>
+    {% endif %}
+
+    <p class="muted">
+      Introduce tus credenciales. (Usuario por defecto: <code>admin</code> / Pass: <code>Admin!234</code>)
+    </p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="msg {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% if demo and raw_username %}
+      <p>Intento como: <span style="font-weight:bold">{{ raw_username|safe }}</span></p>
+    {% elif raw_username %}
+      <p>Intento como: <span style="font-weight:bold">{{ raw_username }}</span></p>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('login') }}{% if demo %}?demo=1{% endif %}">
+      <label for="username">Usuario (libre, acepta HTML en demo)</label>
+      <input id="username" name="username" placeholder="admin o &lt;h1&gt;Pwned&lt;/h1&gt;" required />
+
+      <label for="password">Contrasena</label>
+      <input id="password" type="password" name="password" autocomplete="current-password" required />
+
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
+</body>
+</html>

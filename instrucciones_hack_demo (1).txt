@@ -1,0 +1,43 @@
+=== DEMO DE INYECCIÓN HTML EN LOGIN (MODO EDUCATIVO) ===
+
+Pasos para probar
+--------------------------
+1) Inicia el servidor con:
+   python app.py
+
+2) Abre en el navegador:
+   http://127.0.0.1:5000/login
+
+3) Añade manualmente al final de la URL el parámetro ?demo=1, quedando:
+   http://127.0.0.1:5000/login?demo=1
+
+4) En los campos Usuario y Contraseña escribe:
+   !hack
+
+5) Haz clic en Entrar y observa cómo la página cambia por completo mostrando "pagina hackeada".
+
+Explicación básica
+------------------
+En este ejemplo, el parámetro ?demo=1 activa una variante oculta de la página creada por los desarrolladores
+para hacer pruebas internas. Esta versión contiene una vulnerabilidad grave: no filtra el contenido de los
+campos de usuario y contraseña antes de insertarlos en el HTML.
+
+Al conocer la URL exacta con ?demo=1, un atacante podría aprovechar esta vulnerabilidad para inyectar código
+malicioso, como en este caso el comando especial "!hack", que inserta un bloque de CSS y HTML que sobreescribe
+todo el contenido de la página simulando un "defacement".
+
+En entornos reales, este tipo de falla se clasifica como XSS (Cross-Site Scripting) y puede ser mucho más
+peligrosa. Aquí está controlada para fines educativos.
+
+Créditos
+--------
+Desarrollado como ejemplo didáctico de ciberseguridad para demostrar
+el impacto visual de una inyección de código en el lado cliente.
+
+Hecho por PaintingIlussions Interactive
+
+Aviso legal
+-----------
+Este código y demo son exclusivamente para uso educativo en entornos controlados.
+NO debe utilizarse contra sitios o sistemas ajenos, ya que podría ser ilegal
+y acarrear sanciones. El autor no se hace responsable de un uso indebido.
